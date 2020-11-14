@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Task} from '../task';
 import {Contact} from '../../contacts/contact';
 import {interval, Subscription} from 'rxjs';
@@ -6,7 +6,7 @@ import {interval, Subscription} from 'rxjs';
 @Component({
   selector: '[app-table-item]',
   templateUrl: './table-item.component.html',
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableItemComponent implements OnInit, OnDestroy {
 
@@ -27,7 +27,7 @@ export class TableItemComponent implements OnInit, OnDestroy {
   private inputTask: Task;
   private timerSubscription: Subscription;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -53,6 +53,10 @@ export class TableItemComponent implements OnInit, OnDestroy {
 
   private startInterval() {
     this.stopTimer();
-    this.timerSubscription = interval(1000).subscribe(() => this.task.duration = Date.now() - this.task.startDate.getTime());
+    this.timerSubscription = interval(1000).
+    subscribe(() => {
+      this.task.duration = Date.now() - this.task.startDate.getTime();
+      this.cdr.markForCheck();
+    });
   }
 }

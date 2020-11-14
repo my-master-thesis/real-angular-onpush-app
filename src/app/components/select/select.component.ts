@@ -1,11 +1,22 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  Self
+} from '@angular/core';
 import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
@@ -33,7 +44,8 @@ export class SelectComponent implements OnInit, AfterViewInit, ControlValueAcces
     // We want to be able to use the component without a form,
     // so we mark the dependency as optional.
     @Optional()
-    private ngControl: NgControl
+    private ngControl: NgControl,
+    private cdr: ChangeDetectorRef
   ) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
@@ -53,6 +65,7 @@ export class SelectComponent implements OnInit, AfterViewInit, ControlValueAcces
    */
   writeValue(value: any): void {
     this.value = value;
+    this.cdr.markForCheck();
   }
 
   /**

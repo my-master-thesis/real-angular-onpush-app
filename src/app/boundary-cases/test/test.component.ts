@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-boundary-test',
   templateUrl: './test.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestComponent implements OnInit {
 
@@ -24,7 +24,7 @@ export class TestComponent implements OnInit {
 
   private recursiveTimer;
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -34,7 +34,7 @@ export class TestComponent implements OnInit {
     const tmp = Date.now();
     for (let i = 0; i < 10000000; i++) {
       this.counterA++;
-      // this.cdr.markForCheck();
+      this.cdr.markForCheck();
     }
     this.resultsClick = Date.now() - tmp;
     console.timeEnd('Function this increase');
@@ -48,6 +48,7 @@ export class TestComponent implements OnInit {
       counter++;
     }
     this.counterB = counter;
+    this.cdr.markForCheck();
     this.resultsClickVar = Date.now() - tmp;
     console.timeEnd('Function var increase');
   }
@@ -57,6 +58,7 @@ export class TestComponent implements OnInit {
     const tmp = Date.now();
     for (let i = 0; i < 10000000; i++) {
       this.hidden++;
+      this.cdr.markForCheck();
     }
     this.resultsClickHidden = Date.now() - tmp;
     console.timeEnd('Function hidden increase');
@@ -68,6 +70,7 @@ export class TestComponent implements OnInit {
     for (let i = 0; i < 1000; i++) {
       setTimeout(() => {
         this.counterC++;
+        this.cdr.markForCheck();
       }, 1);
     }
     this.resultsClickTimeout = Date.now() - tmp;
@@ -82,10 +85,12 @@ export class TestComponent implements OnInit {
     if (nr > 0) {
       setTimeout(() => {
         this.counterC++;
+        this.cdr.markForCheck();
         this.clickRecursiveTimeout(nr - 1);
       }, 1);
     } else {
       this.resultsClickRecursiveTimeout = Date.now() - this.recursiveTimer;
+      this.cdr.markForCheck();
       console.timeEnd('Function recursive timeout increase');
     }
   }
@@ -97,7 +102,7 @@ export class TestComponent implements OnInit {
       this.counterA++;
       this.counterB++;
       this.counterC++;
-      // this.cdr.markForCheck();
+      this.cdr.markForCheck();
     }
     this.resultsMultiple = Date.now() - tmp;
     console.timeEnd('Function multiple increase');
@@ -108,7 +113,7 @@ export class TestComponent implements OnInit {
     const tmp = Date.now();
     for (let i = 0; i < 10000000; i++) {
       this.initialObject = { title: 'Some changed obj', value: i, deeper: { title: 'Deeper object', someBool: true }, emptyOby: {}};
-      // this.cdr.markForCheck();
+      this.cdr.markForCheck();
     }
     this.resultsSetObject = Date.now() - tmp;
     console.timeEnd('Function set object');

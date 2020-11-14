@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Contact} from './contact';
 import {ContactsStoreService} from './contacts-store.service';
 import {Subscription} from 'rxjs';
@@ -30,7 +30,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
       ]
     )
   ],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactsComponent implements OnInit, OnDestroy {
 
@@ -62,13 +62,23 @@ export class ContactsComponent implements OnInit, OnDestroy {
       (max, contact) => (contact.id > max ? contact.id : max),
       0
     );
-    this.contacts.unshift({
-      id: maxId + 1,
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-    });
+    // this.contacts.unshift({
+    //   id: maxId + 1,
+    //   firstName: '',
+    //   lastName: '',
+    //   email: '',
+    //   phone: '',
+    // });
+    this.contactsStoreService.contactsSubject.next([
+      {
+        id: maxId + 1,
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+      },
+      ...this.contactsStoreService.contactsSubject.value
+    ]);
   }
 
   getFavorites() {

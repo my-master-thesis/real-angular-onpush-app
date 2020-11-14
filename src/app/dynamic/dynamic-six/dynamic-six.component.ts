@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-dynamic-six',
   templateUrl: './dynamic-six.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicSixComponent implements OnInit, OnDestroy {
 
@@ -14,7 +14,7 @@ export class DynamicSixComponent implements OnInit, OnDestroy {
   private timerSubscription: Subscription;
   private timer2Subscription: Subscription;
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.resetTimer(1);
@@ -29,9 +29,17 @@ export class DynamicSixComponent implements OnInit, OnDestroy {
   resetTimer(nr) {
     this.stopTimer(nr);
     if (nr === 1) {
-      this.timerSubscription = interval(1000).subscribe(() => this.currentDate = new Date());
+      this.timerSubscription = interval(1000)
+        .subscribe(() => {
+          this.currentDate = new Date();
+          this.cdr.markForCheck();
+        });
     } else {
-      this.timer2Subscription = interval(200).subscribe(() => this.currentDate2 = new Date());
+      this.timer2Subscription = interval(200)
+        .subscribe(() => {
+          this.currentDate2 = new Date();
+          this.cdr.markForCheck();
+        });
     }
   }
 

@@ -8,7 +8,7 @@ import {Subscription} from 'rxjs';
   selector: 'app-contacts-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent implements OnInit, OnDestroy {
 
