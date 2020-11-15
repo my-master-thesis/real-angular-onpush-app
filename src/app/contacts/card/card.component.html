@@ -12,11 +12,11 @@
   </div>
   <div class="card-body">
     <form class="example-form">
-      <app-input [(ngModel)]="contact.firstName" name="ime" placeholder="Janez" label="Ime"></app-input>
-      <app-input [(ngModel)]="contact.lastName" name="priimek" placeholder="Novak" label="Priimek"></app-input>
-      <app-input [(ngModel)]="contact.email" name="email" placeholder="info@test.com" label="Email"></app-input>
-      <app-input [(ngModel)]="contact.phone" name="telefon" placeholder="+386 31 123 456" label="Telefon"></app-input>
-      <app-select [(ngModel)]="contact.companyId" [data$]="companies" bindLabel="companyName" bindValue="id" name="companyId" label="Podjetje"></app-select>
+      <app-input [(ngModel)]="contact.firstName" (change)="contactChange.emit(contact)" name="ime" placeholder="Janez" label="Ime"></app-input>
+      <app-input [(ngModel)]="contact.lastName" (change)="contactChange.emit(contact)" name="priimek" placeholder="Novak" label="Priimek"></app-input>
+      <app-input [(ngModel)]="contact.email" (change)="contactChange.emit(contact)" name="email" placeholder="info@test.com" label="Email"></app-input>
+      <app-input [(ngModel)]="contact.phone" (change)="contactChange.emit(contact)" name="telefon" placeholder="+386 31 123 456" label="Telefon"></app-input>
+      <app-select [(ngModel)]="contact.companyId" (change)="contactChange.emit(contact)" [data$]="companies" bindLabel="companyName" bindValue="id" name="companyId" label="Podjetje"></app-select>
       <p *ngIf="!full"><a [routerLink]="contact.id">Več</a></p>
     </form>
   </div>

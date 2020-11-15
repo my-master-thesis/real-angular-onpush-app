@@ -1,6 +1,11 @@
 <div class="row mr-md-n3 mr-0">
   <div *ngFor="let contact of contacts | filter: pageIndex: pageSize" class="col-lg-4 col-md-6 mb-3">
-    <app-contacts-card [contact]="contact" (favoriteChange)="favoriteChange.emit($event)" (delete)="delete.emit($event)"></app-contacts-card>
+    <app-contacts-card
+      [contact]="contact"
+      (contactChange)="contactChange.emit($event)"
+      (favoriteChange)="favoriteChange.emit($event)"
+      (delete)="delete.emit($event)"
+    ></app-contacts-card>
   </div>
 </div>
 <app-pagination

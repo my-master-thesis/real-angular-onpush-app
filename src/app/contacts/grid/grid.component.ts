@@ -11,6 +11,7 @@ export class GridComponent implements OnInit {
   @Input() contacts: Contact[];
   @Input() search: boolean;
 
+  @Output() contactChange = new EventEmitter();
   @Output() favoriteChange = new EventEmitter();
   @Output() delete = new EventEmitter();
 

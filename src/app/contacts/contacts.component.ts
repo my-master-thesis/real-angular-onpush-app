@@ -84,4 +84,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getFavorites() {
     this.favorites = this.contacts.filter(contact => contact.isFavorite);
   }
+
+  contactChange(args) {
+    this.contactsStoreService.contactsSubject.next([
+      ...(this.contactsStoreService.contactsSubject.value
+        .map(item => { return item.id === args.id ? {...item} : item; }))
+    ]);
+  }
 }
