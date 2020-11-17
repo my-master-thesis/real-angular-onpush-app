@@ -67,7 +67,7 @@ export class TestComponent implements OnInit {
   clickTimeout() {
     console.time('Function timeout increase');
     const tmp = Date.now();
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 10000; i++) {
       setTimeout(() => {
         this.counterC++;
         this.cdr.markForCheck();
